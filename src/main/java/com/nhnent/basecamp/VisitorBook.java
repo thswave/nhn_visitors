@@ -6,6 +6,7 @@ public class VisitorBook {
 	private String name;
 	private String password;
 	private String content;
+	private String email;
 	
 	public int getId() {
 		return id;
@@ -31,5 +32,11 @@ public class VisitorBook {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }
