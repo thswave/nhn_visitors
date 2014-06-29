@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,7 +44,6 @@ public class VisitorBookDao {
 				}
 			});
 		} catch (EmptyResultDataAccessException e) {
-			e.printStackTrace();
 		}
 		
 		return visitorBook;
@@ -55,7 +53,7 @@ public class VisitorBookDao {
 		final String sql = "INSERT INTO "
 				+ "guest_book( name, password, email, content, created_at, updated_at) "
 				+ "values(?, ?, ?, ?, current_timestamp, current_timestamp)";
-		String[] params = new String[] { visitorBook.getName(),
+		Object[] params = new String[] { visitorBook.getName(),
 				visitorBook.getPassword(), visitorBook.getEmail(),
 				visitorBook.getContent(), };
 		jdbcTemplate.update(sql, params);
@@ -68,9 +66,15 @@ public class VisitorBookDao {
 
 	public void delete(int id) {
 		final String sql = "DELETE FROM guest_book WHERE id = ?";
-		Integer[] params = new Integer[] { id };
+		Object[] params = new Integer[] { id };
 		jdbcTemplate.update(sql, params);
 		
+	}
+
+	public void update(Object[] updateData) {
+		final String sql = "UPDATE guest_book SET name = ?, email = ? , content = ? , updated_at = current_timestamp  WHERE id = ?";
+		Object[] params = updateData;
+		jdbcTemplate.update(sql, params);
 	}
 
 }

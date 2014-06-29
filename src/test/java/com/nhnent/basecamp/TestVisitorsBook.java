@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
-import java.text.SimpleDateFormat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+
+import com.nhnent.basecamp.common.EmailValidator;
 
 public class TestVisitorsBook {
 	
@@ -17,6 +17,7 @@ public class TestVisitorsBook {
 	private VisitorBookDao visitorBookDao;
 	private VisitorBook testVisitorBook;
 
+	@SuppressWarnings("resource")
 	@Before
 	public void setUp(){
 		ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
@@ -71,7 +72,41 @@ public class TestVisitorsBook {
 	
 	@Test
 	public void testUpdate(){
-		
+		visitorBookDao.add(testVisitorBook);
+		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
+		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent" , lastInsertedVisitorBookId,};
+		visitorBookDao.update(updateData);
+		VisitorBook visitorBook = visitorBookDao.get(lastInsertedVisitorBookId);
+		assertEquals(updateData[0] , visitorBook.getName());
+		assertEquals(updateData[1] , visitorBook.getEmail());
+		assertEquals(updateData[2] , visitorBook.getContent());
 	}
 	
+	@Test
+	public void testEmailValidate(){
+		String[] validEmailList = { "nhnent@yahoo.com",
+				"nhnent-100@yahoo.com", "nhnent.100@yahoo.com",
+				"nhnent111@nhnent.com", "nhnent-100@nhnent.net",
+				"nhnent.100@nhnent.com.au", "nhnent@1.com",
+				"nhnent@gmail.com.com", "nhnent+100@gmail.com",
+				"nhnent-100@yahoo-test.com" };
+		
+		String[] invalidEmailList = { "nhnent", "nhnent@.com.my",
+				"nhnent123@gmail.a", "nhnent123@.com", "nhnent123@.com.com",
+				".nhnent@nhnent.com", "nhnent()*@gmail.com", "nhnent@%*.com",
+				"nhnent..2002@gmail.com", "nhnent.@gmail.com",
+				"nhnent@nhnent@gmail.com", "nhnent@gmail.com.1a" };
+		
+		for (String temp : validEmailList) {
+			boolean valid = EmailValidator.validate(temp);
+			System.out.println("Email is valid : " + temp + " , " + valid);
+			assertEquals(valid, true);
+		}
+		
+		for (String temp : invalidEmailList) {
+			boolean valid = EmailValidator.validate(temp);
+			System.out.println("Email is invalid : " + temp + " , " + valid);
+			assertEquals(valid, false);
+		}
+	}
 }
