@@ -29,7 +29,7 @@ public class HomeController {
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
-		VisitorBook visitorBook = visitorBookDao.get(1);
+		VisitorBook visitorBook = visitorBookDao.find(1);
 		
 		String formattedDate = dateFormat.format(date);
 		

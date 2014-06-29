@@ -2,10 +2,12 @@ package com.nhnent.basecamp.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -26,7 +28,7 @@ public class VisitorBookDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public VisitorBook get(final int id) {
+	public VisitorBook find(final int id) {
 
 		String sql = "SELECT id, name, password, content, email, created_at FROM guest_book WHERE id = ?";
 		Object[] params = { id };
@@ -51,6 +53,15 @@ public class VisitorBookDao {
 		return visitorBook;
 	}
 
+	public List<VisitorBook> findAll(){
+		String sql = "SELECT id, name, password, content, email, created_at, updated_at FROM guest_book";
+		List<VisitorBook> visitorBookList = null;
+		
+		visitorBookList  = jdbcTemplate.query(sql, new BeanPropertyRowMapper<VisitorBook>(VisitorBook.class)); 
+		
+		return visitorBookList;
+	}
+	
 	public void add(VisitorBook visitorBook) {
 		final String sql = "INSERT INTO "
 				+ "guest_book( name, password, email, content, created_at, updated_at) "
@@ -78,5 +89,7 @@ public class VisitorBookDao {
 		Object[] params = updateData;
 		jdbcTemplate.update(sql, params);
 	}
+	
+	
 
 }

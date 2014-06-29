@@ -1,7 +1,8 @@
 package com.nhnent.basecamp.model;
 
-public class VisitorBook {
 
+public class VisitorBook {
+	
 	private int id;
 	private String name;
 	private String password;
@@ -9,6 +10,20 @@ public class VisitorBook {
 	private String email;
 	private String created_at;
 	private String updated_at;
+	
+	public VisitorBook(){}
+	
+	public VisitorBook(int id, String name, String password, String content,
+			String email, String created_at, String updated_at) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.content = content;
+		this.email = email;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
 	
 	public int getId() {
 		return id;
@@ -52,5 +67,10 @@ public class VisitorBook {
 	public void setUpdated_at(String updated_at) {
 		this.updated_at = updated_at;
 	}
+	@Override
+	public String toString() {
+		return "";
+	}
+	
 
 }

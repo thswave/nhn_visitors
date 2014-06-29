@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -38,9 +40,9 @@ public class TestVisitorsBook {
 	}
 	
 	@Test
-	public void testGet(){
+	public void testFind(){
 		int id = 1;
-		VisitorBook visitorBook = visitorBookDao.get(id);
+		VisitorBook visitorBook = visitorBookDao.find(id);
 		assertEquals(1, visitorBook.getId());
 		assertEquals("손창원", visitorBook.getName());
 		assertEquals("1234", visitorBook.getPassword());
@@ -54,7 +56,7 @@ public class TestVisitorsBook {
 		
 		visitorBookDao.add(testVisitorBook);
 		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
-		VisitorBook addedVisitorBook = visitorBookDao.get(lastInsertedVisitorBookId);
+		VisitorBook addedVisitorBook = visitorBookDao.find(lastInsertedVisitorBookId);
 		
 		assertEquals(testVisitorBook.getName(), addedVisitorBook.getName());
 		assertEquals(testVisitorBook.getPassword(), addedVisitorBook.getPassword());
@@ -69,7 +71,7 @@ public class TestVisitorsBook {
 		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
 		visitorBookDao.delete(lastInsertedVisitorBookId);
 		
-		assertNull(visitorBookDao.get(lastInsertedVisitorBookId));
+		assertNull(visitorBookDao.find(lastInsertedVisitorBookId));
 	}
 	
 	@Test
@@ -78,7 +80,7 @@ public class TestVisitorsBook {
 		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
 		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent" , lastInsertedVisitorBookId,};
 		visitorBookDao.update(updateData);
-		VisitorBook visitorBook = visitorBookDao.get(lastInsertedVisitorBookId);
+		VisitorBook visitorBook = visitorBookDao.find(lastInsertedVisitorBookId);
 		assertEquals(updateData[0] , visitorBook.getName());
 		assertEquals(updateData[1] , visitorBook.getEmail());
 		assertEquals(updateData[2] , visitorBook.getContent());
@@ -111,4 +113,5 @@ public class TestVisitorsBook {
 			assertEquals(valid, false);
 		}
 	}
+	
 }
