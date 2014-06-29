@@ -1,5 +1,7 @@
 package com.nhnent.basecamp.model;
 
+import com.google.gson.Gson;
+
 
 public class VisitorBook {
 	
@@ -69,7 +71,7 @@ public class VisitorBook {
 	}
 	@Override
 	public String toString() {
-		return "";
+		return new Gson().toJson(this);
 	}
 	
 

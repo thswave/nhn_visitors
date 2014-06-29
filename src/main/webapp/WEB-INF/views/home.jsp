@@ -7,7 +7,7 @@
 <title>NHN Entertainment TOAST ROOKIE Changwon Son's Visitor Book</title>
 </head>
 <body>
-Basecamp Time ${serverTime}. </br>
-${test}
+Basecamp Time  <br/>
+${visitorBookList}
 </body>
 </html>

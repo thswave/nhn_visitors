@@ -42,7 +42,7 @@ public class TestVisitorsBook {
 	@Test
 	public void testFind(){
 		int id = 1;
-		VisitorBook visitorBook = visitorBookDao.find(id);
+		VisitorBook visitorBook = visitorBookDao.findById(id);
 		assertEquals(1, visitorBook.getId());
 		assertEquals("손창원", visitorBook.getName());
 		assertEquals("1234", visitorBook.getPassword());
@@ -55,8 +55,8 @@ public class TestVisitorsBook {
 	public void testAdd(){
 		
 		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
-		VisitorBook addedVisitorBook = visitorBookDao.find(lastInsertedVisitorBookId);
+		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
+		VisitorBook addedVisitorBook = visitorBookDao.findById(lastInsertedVisitorBookId);
 		
 		assertEquals(testVisitorBook.getName(), addedVisitorBook.getName());
 		assertEquals(testVisitorBook.getPassword(), addedVisitorBook.getPassword());
@@ -68,19 +68,19 @@ public class TestVisitorsBook {
 	@Test
 	public void testDelete(){
 		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
-		visitorBookDao.delete(lastInsertedVisitorBookId);
+		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
+		visitorBookDao.deleteById(lastInsertedVisitorBookId);
 		
-		assertNull(visitorBookDao.find(lastInsertedVisitorBookId));
+		assertNull(visitorBookDao.findById(lastInsertedVisitorBookId));
 	}
 	
 	@Test
 	public void testUpdate(){
 		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
+		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
 		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent" , lastInsertedVisitorBookId,};
 		visitorBookDao.update(updateData);
-		VisitorBook visitorBook = visitorBookDao.find(lastInsertedVisitorBookId);
+		VisitorBook visitorBook = visitorBookDao.findById(lastInsertedVisitorBookId);
 		assertEquals(updateData[0] , visitorBook.getName());
 		assertEquals(updateData[1] , visitorBook.getEmail());
 		assertEquals(updateData[2] , visitorBook.getContent());

@@ -28,7 +28,7 @@ public class VisitorBookDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public VisitorBook find(final int id) {
+	public VisitorBook findById(final int id) {
 
 		String sql = "SELECT id, name, password, content, email, created_at FROM guest_book WHERE id = ?";
 		Object[] params = { id };
@@ -72,12 +72,12 @@ public class VisitorBookDao {
 		jdbcTemplate.update(sql, params);
 	}
 
-	public int getLastInsertedVisitorBookId() {
+	public int getLastAddedVisitorBookId() {
 		String sql = "SELECT MAX(id) from guest_book";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 
-	public void delete(int id) {
+	public void deleteById(int id) {
 		final String sql = "DELETE FROM guest_book WHERE id = ?";
 		Object[] params = new Integer[] { id };
 		jdbcTemplate.update(sql, params);
