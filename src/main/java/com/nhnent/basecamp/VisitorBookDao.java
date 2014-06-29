@@ -25,7 +25,7 @@ public class VisitorBookDao {
 
 	public VisitorBook get(int id) {
 
-		String sql = "select id, name, password, content, email from guest_book where id = ?";
+		String sql = "select id, name, password, content, email, created_at from guest_book where id = ?";
 
 		RowMapper mapper = new RowMapper() {
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -35,6 +35,7 @@ public class VisitorBookDao {
 				visitorBook.setPassword(rs.getString("password"));
 				visitorBook.setContent(rs.getString("content"));
 				visitorBook.setEmail(rs.getString("email"));
+				visitorBook.setCreated_at(rs.getString("created_at"));
 				return visitorBook;
 			}
 		};

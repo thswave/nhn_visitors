@@ -35,6 +35,7 @@ public class TestVisitorsBook {
 		assertEquals("1234", visitorBook.getPassword());
 		assertEquals("test", visitorBook.getContent());
 		assertEquals("test@nhnent.com", visitorBook.getEmail());
+		assertEquals("2014-06-24 18:02:25", visitorBook.getCreated_at());
 	}
 	
 	@Test
@@ -61,5 +62,9 @@ public class TestVisitorsBook {
 		
 	}
 	
-
+	@Test
+	public void testUpdate(){
+		
+	}
+	
 }

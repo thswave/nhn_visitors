@@ -7,7 +7,8 @@ public class VisitorBook {
 	private String password;
 	private String content;
 	private String email;
-//	private String 
+	private String created_at;
+	
 	public int getId() {
 		return id;
 	}
@@ -37,6 +38,12 @@ public class VisitorBook {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
 	}
 
 }
