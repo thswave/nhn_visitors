@@ -3,6 +3,8 @@ package com.nhnent.basecamp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.text.SimpleDateFormat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -15,8 +17,8 @@ public class TestVisitorsBook {
 
 	@Before
 	public void setUp(){
-		ApplicationContext context = new GenericXmlApplicationContext();
-		visitorBookDao = context.getBean("visitorDao",VisitorBookDao.class);
+		ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
+		visitorBookDao = context.getBean("visitorBookDao",VisitorBookDao.class);
 	}
 	
 	@Test
@@ -27,7 +29,7 @@ public class TestVisitorsBook {
 	@Test
 	public void testGetVisitorsBook(){
 		int id = 1;
-		VisitorBook visitorBook = VisitorBookDao.get(id);
+		VisitorBook visitorBook = visitorBookDao.get(id);
 		assertEquals(1, visitorBook.getId());
 		assertEquals("손창원", visitorBook.getName());
 		assertEquals("1234", visitorBook.getPassword());
@@ -56,6 +58,7 @@ public class TestVisitorsBook {
 		assertEquals(password, addedVisitorBook.getPassword());
 		assertEquals(content, addedVisitorBook.getContent());
 		assertEquals(email, addedVisitorBook.getEmail());
+		
 	}
 	
 

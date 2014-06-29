@@ -1,49 +1,56 @@
 package com.nhnent.basecamp;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class VisitorBookDao {
 
-	public static VisitorBook get(int id) {
-		VisitorBook visitorBook = new VisitorBook();
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+	private DataSource dataSource;
+	
+	private JdbcTemplate jdbcTemplate;
 
-		try {
-			Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
-			String url = "jdbc:cubrid:192.168.0.106:30000:nhnbasecamp:::";
-			String userid = "nhnbasecamp";
-			String password = "nhnbasecamp";
+	public DataSource getDataSource() {
+		return dataSource;
+	}
 
-			conn = DriverManager.getConnection(url, userid, password);
-			String sql = "select id, name, password, content from guest_book";
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			while (rs.next()) {
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	public VisitorBook get(int id) {
+		
+		 String sql = "select id, name, password, content, email from guest_book where id = ?";
+
+		RowMapper mapper = new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				VisitorBook visitorBook = new VisitorBook();
 				visitorBook.setId(rs.getInt("id"));
-				visitorBook.setName( rs.getString("name"));
-				visitorBook.setPassword( rs.getString("password"));
+				visitorBook.setName(rs.getString("name"));
+				visitorBook.setPassword(rs.getString("password"));
 				visitorBook.setContent(rs.getString("content"));
-				
+				visitorBook.setEmail(rs.getString("email"));
+				return visitorBook;
 			}
-			rs.close();
-			stmt.close();
-			conn.close();
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		} finally {
-			if (conn != null)
-				try{
-					conn.close();
-				} catch(Exception e){}
-		}
+		};
+		
+		Object[] args = { id };
+		return (VisitorBook) jdbcTemplate.queryForObject(sql, args, mapper);
+	}
+
+	public void add(VisitorBook visitorBook) {
+		
+	}
+
+	public VisitorBook getLastIdVisitorBook() {
+		VisitorBook visitorBook = null;
+		
+		
 		return visitorBook;
 	}
 
