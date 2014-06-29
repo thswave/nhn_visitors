@@ -1,4 +1,4 @@
-package com.nhnent.basecamp;
+package com.nhnent.basecamp.model;
 
 public class VisitorBook {
 

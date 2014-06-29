@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import com.nhnent.basecamp.common.EmailValidator;
+import com.nhnent.basecamp.dao.VisitorBookDao;
+import com.nhnent.basecamp.model.VisitorBook;
 
 public class TestVisitorsBook {
 	

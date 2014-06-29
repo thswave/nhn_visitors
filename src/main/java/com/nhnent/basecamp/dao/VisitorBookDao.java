@@ -1,4 +1,4 @@
-package com.nhnent.basecamp;
+package com.nhnent.basecamp.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
+import com.nhnent.basecamp.model.VisitorBook;
 
 public class VisitorBookDao {
 
@@ -26,7 +28,7 @@ public class VisitorBookDao {
 
 	public VisitorBook get(final int id) {
 
-		String sql = "select id, name, password, content, email, created_at from guest_book where id = ?";
+		String sql = "SELECT id, name, password, content, email, created_at FROM guest_book WHERE id = ?";
 		Object[] params = { id };
 		VisitorBook visitorBook = null;
 		

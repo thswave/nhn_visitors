@@ -10,7 +10,7 @@
 		<property name="password" value="nhnbasecamp"/>
 	</bean>
 	
-	<bean id="visitorBookDao" class="com.nhnent.basecamp.VisitorBookDao">
+	<bean id="visitorBookDao" class="com.nhnent.basecamp.dao.VisitorBookDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 </beans>
