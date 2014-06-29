@@ -2,6 +2,7 @@ package com.nhnent.basecamp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.text.SimpleDateFormat;
 
@@ -14,11 +15,18 @@ public class TestVisitorsBook {
 	
 	
 	private VisitorBookDao visitorBookDao;
+	private VisitorBook testVisitorBook;
 
 	@Before
 	public void setUp(){
 		ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
 		visitorBookDao = context.getBean("visitorBookDao",VisitorBookDao.class);
+		
+		testVisitorBook = new VisitorBook();
+		testVisitorBook.setName("name_test");
+		testVisitorBook.setPassword("1111");
+		testVisitorBook.setContent("content_test");
+		testVisitorBook.setEmail("test@nhnent.com");
 	}
 	
 	@Test
@@ -40,26 +48,25 @@ public class TestVisitorsBook {
 	
 	@Test
 	public void testAdd(){
-		VisitorBook visitorBook = new VisitorBook();
-		String name = "name_test";
-		String password = "1111";
-		String email = "test@nhnent.com";
-		String content = "content_test";
 		
-		visitorBook.setName(name);
-		visitorBook.setPassword(password);
-		visitorBook.setContent(content);
-		visitorBook.setEmail(email);
-		
-		visitorBookDao.add(visitorBook);
+		visitorBookDao.add(testVisitorBook);
 		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
 		VisitorBook addedVisitorBook = visitorBookDao.get(lastInsertedVisitorBookId);
 		
-		assertEquals(name, addedVisitorBook.getName());
-		assertEquals(password, addedVisitorBook.getPassword());
-		assertEquals(content, addedVisitorBook.getContent());
-		assertEquals(email, addedVisitorBook.getEmail());
+		assertEquals(testVisitorBook.getName(), addedVisitorBook.getName());
+		assertEquals(testVisitorBook.getPassword(), addedVisitorBook.getPassword());
+		assertEquals(testVisitorBook.getContent(), addedVisitorBook.getContent());
+		assertEquals(testVisitorBook.getEmail(), addedVisitorBook.getEmail());
 		
+	}
+	
+	@Test
+	public void testDelete(){
+		visitorBookDao.add(testVisitorBook);
+		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
+		visitorBookDao.delete(lastInsertedVisitorBookId);
+		
+		assertNull(visitorBookDao.get(lastInsertedVisitorBookId));
 	}
 	
 	@Test
