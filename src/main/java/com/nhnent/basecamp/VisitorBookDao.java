@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class VisitorBookDao {
 
 	private DataSource dataSource;
-	
+
 	private JdbcTemplate jdbcTemplate;
 
 	public DataSource getDataSource() {
@@ -22,10 +22,10 @@ public class VisitorBookDao {
 		this.dataSource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
+
 	public VisitorBook get(int id) {
-		
-		 String sql = "select id, name, password, content, email from guest_book where id = ?";
+
+		String sql = "select id, name, password, content, email from guest_book where id = ?";
 
 		RowMapper mapper = new RowMapper() {
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -38,20 +38,24 @@ public class VisitorBookDao {
 				return visitorBook;
 			}
 		};
-		
+
 		Object[] args = { id };
 		return (VisitorBook) jdbcTemplate.queryForObject(sql, args, mapper);
 	}
 
 	public void add(VisitorBook visitorBook) {
-		
+		final String sql = "INSERT INTO "
+				+ "guest_book( name, password, email, content, created_at, updated_at) "
+				+ "values(?, ?, ?, ?, current_timestamp, current_timestamp)";
+		String[] params = new String[] { visitorBook.getName(),
+				visitorBook.getPassword(), visitorBook.getEmail(),
+				visitorBook.getContent(), };
+		jdbcTemplate.update(sql, params);
 	}
 
-	public VisitorBook getLastIdVisitorBook() {
-		VisitorBook visitorBook = null;
-		
-		
-		return visitorBook;
+	public int getLastInsertedVisitorBookId() {
+		String sql = "select MAX(id) from guest_book";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 
 }

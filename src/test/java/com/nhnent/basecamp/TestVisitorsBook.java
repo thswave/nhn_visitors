@@ -27,7 +27,7 @@ public class TestVisitorsBook {
 	}
 	
 	@Test
-	public void testGetVisitorsBook(){
+	public void testGet(){
 		int id = 1;
 		VisitorBook visitorBook = visitorBookDao.get(id);
 		assertEquals(1, visitorBook.getId());
@@ -38,7 +38,7 @@ public class TestVisitorsBook {
 	}
 	
 	@Test
-	public void testAddVisitorsBook(){
+	public void testAdd(){
 		VisitorBook visitorBook = new VisitorBook();
 		String name = "name_test";
 		String password = "1111";
@@ -51,8 +51,8 @@ public class TestVisitorsBook {
 		visitorBook.setEmail(email);
 		
 		visitorBookDao.add(visitorBook);
-		VisitorBook addedVisitorBook = visitorBookDao.getLastIdVisitorBook();
-		
+		int lastInsertedVisitorBookId = visitorBookDao.getLastInsertedVisitorBookId();
+		VisitorBook addedVisitorBook = visitorBookDao.get(lastInsertedVisitorBookId);
 		
 		assertEquals(name, addedVisitorBook.getName());
 		assertEquals(password, addedVisitorBook.getPassword());

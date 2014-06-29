@@ -7,7 +7,7 @@ public class VisitorBook {
 	private String password;
 	private String content;
 	private String email;
-	
+//	private String 
 	public int getId() {
 		return id;
 	}
