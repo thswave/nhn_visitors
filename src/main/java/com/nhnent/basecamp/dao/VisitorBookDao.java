@@ -91,7 +91,5 @@ public class VisitorBookDao {
 		Object[] params = updateData;
 		jdbcTemplate.update(sql, params);
 	}
-	
-	
 
 }

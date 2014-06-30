@@ -76,11 +76,7 @@ public class HomeController {
 			@RequestParam(value="content",required=true, defaultValue="") String content,
 			@RequestParam(value="id",required=true, defaultValue="") Integer id) {
 		Object[] updateData = {name, email, content, password, id};
-//		VisitorBook visitorBook = new VisitorBook();
-//		visitorBook.setName(name);
-//		visitorBook.setPassword(password);
-//		visitorBook.setEmail(email);
-//		visitorBook.setContent(content);
+
 		
 		String notify = null;
 		ModelAndView mav = new ModelAndView("home");
@@ -94,6 +90,17 @@ public class HomeController {
 		List<VisitorBook> visitorBookList = visitorBookDao.findAll();
 		mav.addObject(visitorBookList);
 		return mav;
+	}
+	
+	@RequestMapping(value = "/check", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json; charset=utf-8")
+	public @ResponseBody String check(HttpServletRequest request , HttpServletResponse response,
+			@RequestParam(value="id",required=true, defaultValue="") Integer id,
+			@RequestParam(value="passwordConfirm",required=true, defaultValue="") String passwordConfirm){
+		VisitorBook visitorBook = visitorBookDao.findById(id);
+		if (visitorBook.getPassword().equals(passwordConfirm)){
+			return "true";
+		}
+		return "false";
 	}
 	
 	public VisitorBookDao getVisitorBookDao() {

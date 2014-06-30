@@ -30,7 +30,7 @@
 				<h3>TOAST ROOKIE 손창원의 방명록</h3>
 				<p>방명록 남겨주세요~ 굽신굽신!</p>
 				<p>
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#visitorBookModal">
+					<button class="btn btn-primary btn-lg" id="new-visitorbook" data-toggle="modal" data-target="#visitorBookModal">
 	  					방명록 작성
 					</button>
 				</p>
@@ -86,11 +86,14 @@
 	</div>
 	
 	
-	<div class="modal fade" id="visitorBookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="visitorBookModal" tabindex="-1" role="dialog" 
+		aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <button type="button" class="close" data-dismiss="modal">
+	        	<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+	        </button>
 	        <h4 class="modal-title">방명록</h4>
 	      </div>
 	      <div class="modal-body">
@@ -132,7 +135,6 @@
 					  </div>
 					  <input type="hidden" name="id" id="inputId" value="" />
 					</form>
-					
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -141,6 +143,42 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	
+	
+	<div class="modal fade" id="passwordConfirmModal" tabindex="-1" role="dialog" 
+		aria-labelledby="passwordComfirm" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+	        <span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">비밀번호 확인</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p class="bg-danger" id="passwordConfirmResult"></p>
+				  <div class="form-group" id="password-group">
+				    <label for="inputPasswordConfirm" class="col-sm-2 control-label">Password</label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" name="passwordConfirm" id="inputPasswordConfirm" placeholder="Password">
+				    </div>
+				  </div>
+				  <br/><br/>
+				  <div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+				      <button type="submit" id="confirmPasswordBtn" class="btn-primary btn-default">확인</button>
+				    </div>
+				  </div>
+				  <br/>
+				  <input type="hidden" name="id" id="inputConfirmId" value="" />
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	        <!-- <button type="button" class="btn btn-primary">확인</button> -->
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
 	
 	<script	src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script	src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -193,28 +231,61 @@
 			}
 		});
 		
-		$(".visitorbook-modify").click(function(){
-			$("#inputId").val($(this).data("id"));
-			$("#registerForm").attr("action","/update");
-			$.ajax({
-				  url: "/get/" + $(this).data("id"),
-				  dataType: 'json',
-				  success: function(resultData){
-					  console.log(resultData);
-					  $("#inputName").val(resultData.name);
-						$("#inputPassword").val(resultData.password);
-						$("#inputContent").val(resultData.content);
-						$("#inputEmail").val(resultData.email);
-				  },
-				  error: function(){
-            console.log("something went wrong");
-          }
-				});
-			
-			$('#visitorBookModal').modal('show');
-			
+		$(".new-visitorbook").click(function(){
+			$("#registerForm").attr("action","/add");
 		});
+		
+		$(".visitorbook-modify").click(function(){
+			$("#inputConfirmId").val($(this).data("id"));
+			$('#passwordConfirmModal').modal('show');
+			$("#inputPasswordConfirm").val("");
+		});
+		
+		$("#confirmPasswordBtn").click(function(){
+			$.ajax({
+				type: "POST",
+			  url: "/check",
+			  data: { "id": $("#inputConfirmId").val(),
+				  "passwordConfirm": $("#inputPasswordConfirm").val()},
+			  dataType: 'json',
+			  success: function(resultData){
+				  if(resultData === true){
+					  setRegisterFormModal($("#inputConfirmId").val());
+				  } else{
+					  $("#passwordConfirmResult").text("비밀번호가 잘못됬습니다.");
+					  $('#passwordConfirmResult').delay(1000).fadeOut('slow');
+				  }
+			  },
+			  error: function(){
+	       console.log("something went wrong");
+	   		}
+			});
+		});
+		
 	});
+	
+	function setRegisterFormModal(id){
+		$('#passwordConfirmModal').modal('hide');
+		$("#inputId").val(id);
+		$("#registerForm").attr("action","/update");
+		$("#visitorBookModal").modal("show");
+		
+		$.ajax({
+			  url: "/get/" + id,
+			  dataType: 'json',
+			  success: function(resultData){
+				  console.log(resultData);
+				  $("#inputName").val(resultData.name);
+					$("#inputPassword").val(resultData.password);
+					$("#inputContent").val(resultData.content);
+					$("#inputEmail").val(resultData.email);
+			  },
+			  error: function(){
+        console.log("something went wrong");
+      }
+		});
+	}
+
 	</script>
 </body>
 </html>
