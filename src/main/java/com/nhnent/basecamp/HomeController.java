@@ -9,10 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nhnent.basecamp.common.EmailValidator;
@@ -48,8 +49,6 @@ public class HomeController {
 		visitorBook.setContent(content);
 		
 		String notify = null;
-		logger.debug(name);
-		logger.info(name);
 		ModelAndView mav = new ModelAndView("home");
 		if (EmailValidator.validate(email)){
 			notify ="success";
@@ -57,12 +56,18 @@ public class HomeController {
 		}else
 			notify ="fail";
 		
-		mav.addObject(notify);
+		mav.addObject("notify", notify);
 		List<VisitorBook> visitorBookList = visitorBookDao.findAll();
 		mav.addObject(visitorBookList);
 		return mav;
 	}
 
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET, headers = "Accept=*/*", produces = "application/json; charset=utf-8")
+	public @ResponseBody VisitorBook get(@PathVariable("id") Integer id) {
+		VisitorBook visitorBook = visitorBookDao.findById(id);
+		return visitorBook;
+	}
+	
 	public VisitorBookDao getVisitorBookDao() {
 		return visitorBookDao;
 	}

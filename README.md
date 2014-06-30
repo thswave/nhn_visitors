@@ -2,3 +2,4 @@
 
 방명록 만들기.
 
+src/table_schema.txt

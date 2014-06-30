@@ -17,7 +17,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-static-top " role="banner">
 		<div class="container">
-			<a href="#" class="navbar-brand"
+			<a href="/" class="navbar-brand"
 				style="margin-top: 9px; background: url(/resources/images/sp_common_v3.png) no-repeat; line-height: 999px; overflow: hidden;">NHN
 				ENTERTAINMENT</a>
 		</div>
@@ -27,10 +27,10 @@
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
 			<div class="container">
-				<h3>TOAST ROOKIE 손창원에게 방명록 남기기!</h3>
+				<h3>TOAST ROOKIE 손창원의 방명록</h3>
 				<p>방명록 남겨주세요~ 굽신굽신!</p>
 				<p>
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#visitorBook">
+					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#visitorBookModal">
 	  					방명록 작성
 					</button>
 				</p>
@@ -41,35 +41,41 @@
 	<div class="container">
 		<div id="notify" >
 			<c:if test="${nofity == 'success'}" >
-				<p class="bg-success"> 입력되었습니다. </p>
+				<p class="bg-success" style="padding:15px;">정상적으로 입력되었습니다. </p>
 			</c:if>
 			<c:if test="${nofity == 'fail'}" >
-				<p class="bg-danger"> 이메일형식이 잘못되어 입력이 실패되었습니다. </p>
+				<p class="bg-danger" style="padding:15px;"> 이메일형식이 잘못되어 입력이 실패되었습니다. </p>
 			</c:if>
+			${notify }
 		</div>
 		
-		
 		<c:set var="rowCount" value="${0}" />
+		
 		<c:if test="${not empty visitorBookList}" >
 			<c:forEach var="visitorBook" items="${visitorBookList}">
-				<c:if test="${rowCount == 0}" >
-					<c:set var="rowCount" value="${rowCount + 1}" />
+				<c:set var="rowCount" value="${rowCount+1}" />
+				<c:if test="${rowCount == 1}" >
 					<div class="row">
 				</c:if>
-					<div class="col-md-4">
-						<h4>${visitorBook.name} / ${visitorBook.email} ${visitorBook.email}</h4>
-						<p>${visitorBook.content}</p>
-						<p>${visitorBook.created_at}</p>
-						<button class="btn btn-primary btn" data-toggle="modal" data-target="#visitorBook">
-	  					수정
-						</button>
-					</div>
+				
+				<div class="col-md-4">
+					<h4>${visitorBook.name} / ${visitorBook.email} ${visitorBook.email}</h4>
+					<p>${visitorBook.content}</p>
+					<p>${visitorBook.created_at}</p>
+					<button class="btn btn-primary btn visitorbook-modify" data-toggle="modal" data-id="${visitorBook.id}">
+  					수정
+					</button>
+				</div>
 					
-				<c:if test="${rowCount == 2}" >
+				<c:if test="${rowCount > 2}" >
 					<c:set var="rowCount" value="${0}" />
 					</div>
 				</c:if>
 			</c:forEach>
+		</c:if>
+		
+		<c:if test="${rowCount != 0}" >			
+			</div>
 		</c:if>
 		
 		<hr>
@@ -80,7 +86,7 @@
 	</div>
 	
 	
-	<div class="modal fade" id="visitorBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="visitorBookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -184,6 +190,28 @@
 					}
 				}
 			}
+		});
+		
+		$(".visitorbook-modify").click(function(){
+			var data = $(this).data("id"); 
+			var a;
+			$.ajax({
+				  url: "/get/" + $(this).data("id"),
+				  dataType: 'json',
+				  success: function(resultData){
+					  console.log(resultData);
+					  $("#inputName").val(resultData.name);
+						$("#inputPassword").val(resultData.password);
+						$("#inputContent").val(resultData.content);
+						$("#inputEmail").val(resultData.email);
+				  },
+				  error: function(){
+            console.log("something went wrong");
+          }
+				});
+			
+			$('#visitorBookModal').modal('show');
+			
 		});
 	});
 	</script>
