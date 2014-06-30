@@ -48,7 +48,8 @@ public class HomeController {
 		visitorBook.setContent(content);
 		
 		String notify = null;
-		
+		logger.debug(name);
+		logger.info(name);
 		ModelAndView mav = new ModelAndView("home");
 		if (EmailValidator.validate(email)){
 			notify ="success";
