@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nhnent.basecamp.dao.VisitorBookDao;
 import com.nhnent.basecamp.model.VisitorBook;
@@ -20,12 +21,12 @@ public class HomeController {
 	public VisitorBookDao visitorBookDao;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public ModelAndView home(Locale locale, Model model) {
 		List<VisitorBook> visitorBookList = visitorBookDao.findAll();
 		
 		model.addAttribute("visitorBookList", visitorBookList );
-		
-		return "home";
+		ModelAndView mav = new ModelAndView("home");
+		return mav;
 	}
 
 	public VisitorBookDao getVisitorBookDao() {

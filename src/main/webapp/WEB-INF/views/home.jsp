@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,67 +35,32 @@
 			</div>
 		</div>
 	</div>
-
+	<% int rowCount = 0; %>
 
 	<div class="container">
-
-		<div class="row">
-			<div class="col-md-4">
-				<h2>Heading</h2>
-				<p>Donec id elit non mi porta gravida at eget metus. Fusce
-					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-					magna mollis euismod. Donec sed odio dui.</p>
-				<p>Donec id elit non mi porta gravida at eget metus. Fusce
-					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-					magna mollis euismod. Donec sed odio dui.</p>
-				<p>
-					<a class="btn btn-default" href="#" role="button">View details
-						»</a>
-				</p>
-			</div>
-			<div class="col-md-4">
-				<h2>Heading</h2>
-				<p>Donec id elit non mi porta gravida at eget metus. Fusce
-					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-					magna mollis euismod. Donec sed odio dui.</p>
-				<p>
-					<a class="btn btn-default" href="#" role="button">View details
-						»</a>
-				</p>
-			</div>
-			<div class="col-md-4">
-				<h2>Heading</h2>
-				<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
-					egestas eget quam. Vestibulum id ligula porta felis euismod semper.
-					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-					nibh, ut fermentum massa justo sit amet risus.</p>
-				<p>
-					<a class="btn btn-default" href="#" role="button">View details
-						»</a>
-				</p>
-			</div>
-		</div>
-		<div class="row">
-        <div class="col-md-4">
-          <h2>name / email</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div>
-      </div>
+		<c:if test="${not empty visitorBookList}" >
+			<c:forEach var="visitorBook" items="${visitorBookList}">
+			<% if (rowCount == 0 ){  
+						++rowCount;
+			%>
+				<div class="row">
+			<% } %>
+			
+				<div class="col-md-4">
+					<h4>${visitorBook.name} / ${visitorBook.email} ${visitorBook.email}</h4>
+					<p>${visitorBook.content}</p>
+					<p>${visitorBook.created_at}</p>
+					<p><a class="btn btn-default" href="#" role="button">수정</a>	</p>
+				</div>
+				
+			<% if (rowCount == 2 ){  
+						rowCount = 0;
+			%>
+				</div>
+			<% } %>	
+			</c:forEach>
+		</c:if>
+		
 		<hr>
 
 		<footer>

@@ -54,7 +54,7 @@ public class VisitorBookDao {
 	}
 
 	public List<VisitorBook> findAll(){
-		String sql = "SELECT id, name, password, content, email, created_at, updated_at FROM guest_book";
+		String sql = "SELECT id, name, password, content, email, created_at, updated_at FROM guest_book ORDER BY created_at DESC";
 		List<VisitorBook> visitorBookList = null;
 		
 		visitorBookList  = jdbcTemplate.query(sql, new BeanPropertyRowMapper<VisitorBook>(VisitorBook.class)); 
