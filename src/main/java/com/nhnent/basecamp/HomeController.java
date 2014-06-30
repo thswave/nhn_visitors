@@ -68,6 +68,34 @@ public class HomeController {
 		return visitorBook;
 	}
 	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ModelAndView update(HttpServletRequest request , HttpServletResponse response,
+			@RequestParam(value="name",required=true, defaultValue="") String name,
+			@RequestParam(value="email",required=true, defaultValue="") String email,
+			@RequestParam(value="password",required=true, defaultValue="") String password,
+			@RequestParam(value="content",required=true, defaultValue="") String content,
+			@RequestParam(value="id",required=true, defaultValue="") Integer id) {
+		Object[] updateData = {name, email, content, password, id};
+//		VisitorBook visitorBook = new VisitorBook();
+//		visitorBook.setName(name);
+//		visitorBook.setPassword(password);
+//		visitorBook.setEmail(email);
+//		visitorBook.setContent(content);
+		
+		String notify = null;
+		ModelAndView mav = new ModelAndView("home");
+		if (EmailValidator.validate(email)){
+			notify ="success";
+			visitorBookDao.update(updateData);
+		}else
+			notify ="fail";
+		
+		mav.addObject("notify", notify);
+		List<VisitorBook> visitorBookList = visitorBookDao.findAll();
+		mav.addObject(visitorBookList);
+		return mav;
+	}
+	
 	public VisitorBookDao getVisitorBookDao() {
 		return visitorBookDao;
 	}

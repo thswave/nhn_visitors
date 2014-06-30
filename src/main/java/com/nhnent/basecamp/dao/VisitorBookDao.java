@@ -54,7 +54,8 @@ public class VisitorBookDao {
 	}
 
 	public List<VisitorBook> findAll(){
-		String sql = "SELECT id, name, password, content, email, created_at, updated_at FROM guest_book ORDER BY updated_at DESC";
+		String sql = "SELECT id, name, password, content, email, created_at, updated_at"
+				+ " FROM guest_book ORDER BY updated_at DESC";
 		List<VisitorBook> visitorBookList = null;
 		
 		visitorBookList  = jdbcTemplate.query(sql, new BeanPropertyRowMapper<VisitorBook>(VisitorBook.class)); 
@@ -85,7 +86,8 @@ public class VisitorBookDao {
 	}
 
 	public void update(Object[] updateData) {
-		final String sql = "UPDATE guest_book SET name = ?, email = ? , content = ? , updated_at = current_timestamp  WHERE id = ?";
+		final String sql = "UPDATE guest_book SET name = ?, email = ?, content = ?, password = ?,"
+				+ " updated_at = current_timestamp  WHERE id = ?";
 		Object[] params = updateData;
 		jdbcTemplate.update(sql, params);
 	}

@@ -78,7 +78,7 @@ public class TestVisitorsBook {
 	public void testUpdate(){
 		visitorBookDao.add(testVisitorBook);
 		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
-		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent" , lastInsertedVisitorBookId,};
+		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent", "ChangePW" , lastInsertedVisitorBookId,};
 		visitorBookDao.update(updateData);
 		VisitorBook visitorBook = visitorBookDao.findById(lastInsertedVisitorBookId);
 		assertEquals(updateData[0] , visitorBook.getName());

@@ -59,7 +59,7 @@
 				</c:if>
 				
 				<div class="col-md-4">
-					<h4>${visitorBook.name} / ${visitorBook.email} ${visitorBook.email}</h4>
+					<h4>${visitorBook.name} / ${visitorBook.email}</h4>
 					<p>${visitorBook.content}</p>
 					<p>${visitorBook.created_at}</p>
 					<button class="btn btn-primary btn visitorbook-modify" data-toggle="modal" data-id="${visitorBook.id}">
@@ -130,6 +130,7 @@
 					      <button type="submit" class="btn-primary btn-default">확인</button>
 					    </div>
 					  </div>
+					  <input type="hidden" name="id" id="inputId" value="" />
 					</form>
 					
 	      </div>
@@ -193,8 +194,8 @@
 		});
 		
 		$(".visitorbook-modify").click(function(){
-			var data = $(this).data("id"); 
-			var a;
+			$("#inputId").val($(this).data("id"));
+			$("#registerForm").attr("action","/update");
 			$.ajax({
 				  url: "/get/" + $(this).data("id"),
 				  dataType: 'json',
