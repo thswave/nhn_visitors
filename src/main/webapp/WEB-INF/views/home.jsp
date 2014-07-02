@@ -13,12 +13,12 @@
 <link rel="stylesheet"href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="/resources/css/bootstrapValidator.min.css">
+<link rel="stylesheet" href="/resources/css/home.css">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-static-top " role="banner">
 		<div class="container">
-			<a href="/" class="navbar-brand"
-				style="margin-top: 9px; background: url(/resources/images/sp_common_v3.png) no-repeat; line-height: 999px; overflow: hidden;">NHN
+			<a href="/" class="navbar-brand logo">NHN
 				ENTERTAINMENT</a>
 		</div>
 	</header>
