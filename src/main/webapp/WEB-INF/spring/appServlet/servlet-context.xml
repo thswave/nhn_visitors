@@ -30,15 +30,7 @@
 		<beans:property name="contentType" value="text/html; charset=UTF-8"/>
 	</beans:bean>
 	
-	<beans:import resource="classpath:data-source.xml"/>
-	
-	<beans:bean id="propertyConfigurer"
-  		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-  		<beans:property name="locations">
-  			<beans:list>
-  				<beans:value>classpath:/data-source.properties</beans:value>
-  			</beans:list>
-  		</beans:property>
-  	</beans:bean>
+	<!-- <beans:import resource="/WEB-INF/mybatis/mybatis-context.xml"/> -->
+
   	
 </beans:beans>
