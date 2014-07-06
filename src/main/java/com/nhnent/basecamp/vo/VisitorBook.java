@@ -1,9 +1,9 @@
-package com.nhnent.basecamp.model;
+package com.nhnent.basecamp.vo;
 
 import com.google.gson.Gson;
 
 
-public class VisitorBook {
+public class VisitorBook{
 	
 	private int id;
 	private String name;

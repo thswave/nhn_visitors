@@ -30,7 +30,4 @@
 		<beans:property name="contentType" value="text/html; charset=UTF-8"/>
 	</beans:bean>
 	
-	<!-- <beans:import resource="/WEB-INF/mybatis/mybatis-context.xml"/> -->
-
-  	
 </beans:beans>

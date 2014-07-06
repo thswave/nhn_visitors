@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.nhnent.basecamp.model.VisitorBook;
+import com.nhnent.basecamp.vo.VisitorBook;
 
 public class VisitorBookDao {
 
