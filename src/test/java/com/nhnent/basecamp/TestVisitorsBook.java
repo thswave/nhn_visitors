@@ -6,24 +6,31 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.nhnent.basecamp.common.EmailValidator;
-import com.nhnent.basecamp.dao.VisitorBookDao;
+import com.nhnent.basecamp.service.VisitorBookService;
 import com.nhnent.basecamp.vo.VisitorBook;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
+		"file:src/main/webapp/WEB-INF/mybatis/mybatis-context.xml"})
 public class TestVisitorsBook {
 	
-	
-	private VisitorBookDao visitorBookDao;
+	@Autowired
+	private VisitorBookService visitorBookService;
 	private VisitorBook testVisitorBook;
 
-	@SuppressWarnings("resource")
 	@Before
 	public void setUp(){
-		ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
-		visitorBookDao = context.getBean("visitorBookDao",VisitorBookDao.class);
+//		ApplicationContext context = new GenericXmlApplicationContext("mybatis-context.xml");
+//		visitorBookDao = context.getBean("visitorBookDao",VisitorBookDao.class);
 		
 		testVisitorBook = new VisitorBook();
 		testVisitorBook.setName("name_test");
@@ -40,7 +47,7 @@ public class TestVisitorsBook {
 	@Test
 	public void testFind(){
 		int id = 1;
-		VisitorBook visitorBook = visitorBookDao.findById(id);
+		VisitorBook visitorBook = visitorBookService.selectById(id);
 		assertEquals(1, visitorBook.getId());
 		assertEquals("손창원", visitorBook.getName());
 		assertEquals("1234", visitorBook.getPassword());
@@ -52,9 +59,9 @@ public class TestVisitorsBook {
 	@Test
 	public void testAdd(){
 		
-		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
-		VisitorBook addedVisitorBook = visitorBookDao.findById(lastInsertedVisitorBookId);
+		visitorBookService.add(testVisitorBook);
+		int lastInsertedVisitorBookId = visitorBookService.getLastAddedVisitorBookId();
+		VisitorBook addedVisitorBook = visitorBookService.selectById(lastInsertedVisitorBookId);
 		
 		assertEquals(testVisitorBook.getName(), addedVisitorBook.getName());
 		assertEquals(testVisitorBook.getPassword(), addedVisitorBook.getPassword());
@@ -65,23 +72,27 @@ public class TestVisitorsBook {
 	
 	@Test
 	public void testDelete(){
-		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
-		visitorBookDao.deleteById(lastInsertedVisitorBookId);
+		visitorBookService.add(testVisitorBook);
+		int lastInsertedVisitorBookId = visitorBookService.getLastAddedVisitorBookId();
+		visitorBookService.deleteById(lastInsertedVisitorBookId);
 		
-		assertNull(visitorBookDao.findById(lastInsertedVisitorBookId));
+		assertNull(visitorBookService.selectById(lastInsertedVisitorBookId));
 	}
 	
 	@Test
 	public void testUpdate(){
-		visitorBookDao.add(testVisitorBook);
-		int lastInsertedVisitorBookId = visitorBookDao.getLastAddedVisitorBookId();
-		Object[] updateData = {"ChangeName", "ChangeEmail@change.com", "ChangeContent", "ChangePW" , lastInsertedVisitorBookId,};
-		visitorBookDao.update(updateData);
-		VisitorBook visitorBook = visitorBookDao.findById(lastInsertedVisitorBookId);
-		assertEquals(updateData[0] , visitorBook.getName());
-		assertEquals(updateData[1] , visitorBook.getEmail());
-		assertEquals(updateData[2] , visitorBook.getContent());
+		visitorBookService.add(testVisitorBook);
+		int lastInsertedVisitorBookId = visitorBookService.getLastAddedVisitorBookId();
+		testVisitorBook.setName("ChangeName");
+		testVisitorBook.setPassword("ChangePW");
+		testVisitorBook.setPassword("ChangeEmail@change.com");
+		testVisitorBook.setContent("ChangeContent");
+		testVisitorBook.setId(lastInsertedVisitorBookId);
+		visitorBookService.update(testVisitorBook);
+		VisitorBook visitorBook = visitorBookService.selectById(lastInsertedVisitorBookId);
+		assertEquals(testVisitorBook.getName() , visitorBook.getName());
+		assertEquals(testVisitorBook.getEmail() , visitorBook.getEmail());
+		assertEquals(testVisitorBook.getContent() , visitorBook.getContent());
 	}
 	
 	@Test

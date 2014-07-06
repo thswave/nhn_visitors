@@ -62,6 +62,6 @@
   </update>
   
   <delete id="deleteVisitorBookById" parameterType="int">
-  	DELETE FROM guest_book WHERE id = ?
+  	DELETE FROM guest_book WHERE id = #{id}
   </delete>
 </mapper>
