@@ -51,7 +51,14 @@
   </insert>
  
   <update id="updateVisitorBook" parameterType="VisitorBook">
-    update ORDERS set ORD_DELETED = true where ORD_ID = #{id}
+    UPDATE guest_book 
+    SET 
+    	name = #{name}, 
+    	email = #{email}, 
+    	content = #{content},  
+    	password = #{password}, 
+			updated_at = current_timestamp  
+		WHERE id = #{id}
   </update>
   
   <delete id="deleteVisitorBookById" parameterType="int">

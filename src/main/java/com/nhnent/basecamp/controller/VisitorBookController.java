@@ -38,22 +38,20 @@ public class VisitorBookController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ModelAndView add(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam(value="name",required=true, defaultValue="") String name,
 			@RequestParam(value="email",required=true, defaultValue="") String email,
 			@RequestParam(value="password",required=true, defaultValue="") String password,
 			@RequestParam(value="content",required=true, defaultValue="") String content) {
-		
 		VisitorBook visitorBook = new VisitorBook();
 		visitorBook.setName(name);
 		visitorBook.setPassword(password);
 		visitorBook.setEmail(email);
 		visitorBook.setContent(content);
-		
 		String notify = null;
 		ModelAndView mav = new ModelAndView("home");
-		if (EmailValidator.validate(email)){
+		if (EmailValidator.validate(visitorBook.getEmail())){
 			notify ="success";
 			visitorBookService.add(visitorBook);
 		}else
@@ -71,31 +69,34 @@ public class VisitorBookController {
 		VisitorBook visitorBook = visitorBookService.selectById(id);
 		return visitorBook;
 	}
-//	
-//	@RequestMapping(value = "/update", method = RequestMethod.POST)
-//	public ModelAndView update(HttpServletRequest request , HttpServletResponse response,
-//			@RequestParam(value="name",required=true, defaultValue="") String name,
-//			@RequestParam(value="email",required=true, defaultValue="") String email,
-//			@RequestParam(value="password",required=true, defaultValue="") String password,
-//			@RequestParam(value="content",required=true, defaultValue="") String content,
-//			@RequestParam(value="id",required=true, defaultValue="") Integer id) {
-//		Object[] updateData = {name, email, content, password, id};
-//
-//		
-//		String notify = null;
-//		ModelAndView mav = new ModelAndView("home");
-//		if (EmailValidator.validate(email)){
-//			notify ="success";
-//			visitorBookDao.update(updateData);
-//		}else
-//			notify ="fail";
-//		
-//		mav.addObject("notify", notify);
-//		List<VisitorBook> visitorBookList = visitorBookDao.findAll();
-//		mav.addObject(visitorBookList);
-//		return mav;
-//	}
-//	
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ModelAndView update(HttpServletRequest request , HttpServletResponse response,
+			@RequestParam(value="name",required=true, defaultValue="") String name,
+			@RequestParam(value="email",required=true, defaultValue="") String email,
+			@RequestParam(value="password",required=true, defaultValue="") String password,
+			@RequestParam(value="content",required=true, defaultValue="") String content,
+			@RequestParam(value="id",required=true, defaultValue="") Integer id) {
+		VisitorBook visitorBook = new VisitorBook();
+		visitorBook.setId(id);
+		visitorBook.setName(name);
+		visitorBook.setPassword(password);
+		visitorBook.setEmail(email);
+		visitorBook.setContent(content);
+		
+		String notify = null;
+		ModelAndView mav = new ModelAndView("home");
+		if (EmailValidator.validate(email)){
+			notify ="success";
+			visitorBookService.update(visitorBook);
+		}else
+			notify ="fail";
+		
+		mav.addObject("notify", notify);
+		mav.addObject(visitorBookService.selectAll());
+		return mav;
+	}
+	
 	@RequestMapping(value = "/check", method = RequestMethod.POST, headers = "Accept=*/*",
 			produces = "application/json; charset=utf-8")
 	public @ResponseBody String check(HttpServletRequest request , HttpServletResponse response,

@@ -43,10 +43,6 @@ $('#registerForm').bootstrapValidator({
 	}
 });
 
-$(".new-visitorbook").click(function(){
-	$("#registerForm").attr("action","/add");
-});
-
 $(".visitorbook-modify").click(function(){
 	$("#inputConfirmId").val($(this).data("id"));
 	$('#passwordConfirmModal').modal('show');
@@ -73,7 +69,11 @@ $("#confirmPasswordBtn").click(function(){
 	}
 	});
 });
-		
+	
+$('.modal').on('hidden.bs.modal', function(){
+    $(this).find('form')[0].reset();
+    $("#registerForm").attr("action","/add");
+});
 	
 $.setRegisterFormModal = function(id){
 	$('#passwordConfirmModal').modal('hide');

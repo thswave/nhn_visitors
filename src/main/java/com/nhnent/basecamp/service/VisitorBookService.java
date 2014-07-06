@@ -14,4 +14,5 @@ public interface VisitorBookService {
 	public int getLastAddedVisitorBookId();
 	public void deleteById(int id);
 	void add(VisitorBook visitorBook);
+	public void update(VisitorBook updateVisitorBook);
 }

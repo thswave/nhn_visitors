@@ -90,6 +90,13 @@
 		aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
+	    	<!-- input form -->
+	        <form class="form-horizontal" role="form" id="registerForm" action="/add" method="POST"
+		        data-bv-message="This value is not valid"
+				    data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+				    data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+				    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+				  
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">
 	        	<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -97,13 +104,7 @@
 	        <h4 class="modal-title">방명록</h4>
 	      </div>
 	      <div class="modal-body">
-	      	<!-- input form -->
-	        <form class="form-horizontal" role="form" id="registerForm" action="/add" method="post"
-		        data-bv-message="This value is not valid"
-				    data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
-				    data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
-				    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-				    
+	      	  
 	        	<div class="form-group" id="id-group">
 					    <label for="inputName" class="col-sm-2 control-label">Name</label>
 					    <div class="col-sm-10">
@@ -130,16 +131,20 @@
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-10">
-					      <button type="submit" class="btn-primary btn-default">확인</button>
+					      
 					    </div>
 					  </div>
 					  <input type="hidden" name="id" id="inputId" value="" />
-					</form>
+					  <input type="hidden" name="created_at" id="asdfec" value="" />
+				  <input type="hidden" name="updated_at" id="asdf" value="" />
+					
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	        <button type="submit" class="btn btn-primary btn-default">확인</button>
 	        <!-- <button type="button" class="btn btn-primary">확인</button> -->
 	      </div>
+	      </form>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -165,11 +170,13 @@
 				  <br/><br/>
 				  <div class="form-group">
 				    <div class="col-sm-offset-2 col-sm-10">
-				      <button type="submit" id="confirmPasswordBtn" class="btn-primary btn-default">확인</button>
+				      <button type="submit" id="confirmPasswordBtn" class="btn btn-primary btn-default">확인</button>
 				    </div>
 				  </div>
 				  <br/>
 				  <input type="hidden" name="id" id="inputConfirmId" value="" />
+				  <input type="hidden" name="created_at" id="asdfec" value="" />
+				  <input type="hidden" name="updated_at" id="asdf" value="" />
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>

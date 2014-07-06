@@ -32,13 +32,10 @@ public class VisitorBookServiceImp implements VisitorBookService {
 		sqlSession.insert("VisitorBook.insertVisitorBook", visitorBook);
 	}
 	
-//	public void update(Object[] updateData) {
-//		final String sql = "UPDATE guest_book SET name = ?, email = ?, content = ?, password = ?,"
-//				+ " updated_at = current_timestamp  WHERE id = ?";
-//		Object[] params = updateData;
-//		jdbcTemplate.update(sql, params);
-//	}
-	
+	@Override
+	public void update(VisitorBook updateVisitorBook) {
+		sqlSession.update("VisitorBook.updateVisitorBook", updateVisitorBook);
+	}
 	
 	@Override
 	public int getLastAddedVisitorBookId() {
