@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="/resources/css/home.css">
 	
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
-	<script	src="/resources/js/home.js"></script>
+	<script	src="/resources/js/visitorBook.js"></script>
 	
 </head>
 <body>
