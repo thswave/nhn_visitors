@@ -28,21 +28,33 @@
     FROM guest_book 
     WHERE id = #{id}
   </select>
- 
-   <insert id="insertVisitorBook" parameterType="VisitorBook">
-    insert into guest_book (
-    ORD_ID,
-    ITEM,
-    ITEM_COUNT,
-    ITEM_DESC,
-    ORD_DELETED
-    )
-    values (
-    #{id}, #{item}, #{amount}, #{description}, false
-    )
+  
+  <select id="getLastAddedVisitorBookId" resultType="int">
+    SELECT MAX(id) from guest_book
+  </select>
+  
+  <insert id="insertVisitorBook" parameterType="VisitorBook">
+    INSERT INTO guest_book
+    	( name, 
+    		password, 
+    		email, 
+    		content, 
+    		created_at, 
+    		updated_at)
+		VALUES(
+			#{name}, 
+			#{password}, 
+			#{email}, 
+			#{content}, 
+			current_timestamp, 
+			current_timestamp)
   </insert>
  
   <update id="updateVisitorBook" parameterType="VisitorBook">
     update ORDERS set ORD_DELETED = true where ORD_ID = #{id}
   </update>
+  
+  <delete id="deleteVisitorBookById" parameterType="int">
+  	DELETE FROM guest_book WHERE id = ?
+  </delete>
 </mapper>
