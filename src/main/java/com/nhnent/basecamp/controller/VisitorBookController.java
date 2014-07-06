@@ -29,13 +29,18 @@ public class VisitorBookController {
 	@Autowired
 	public VisitorBookService visitorBookService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Model model) {
-		List<VisitorBook> visitorBookList = visitorBookService.selectAll();
-		
-		model.addAttribute("visitorBookList", visitorBookList );
+	@RequestMapping(value = "/", method=RequestMethod.GET)
+	public ModelAndView home() {
+//		List<VisitorBook> visitorBookList = visitorBookService.selectAll();
+//		model.addAttribute("visitorBookList", visitorBookList );
 		ModelAndView mav = new ModelAndView("home");
 		return mav;
+	}
+	
+	@RequestMapping(value="/lists", method=RequestMethod.GET, headers="Accept=application/json",
+			produces="application/json; charset=utf-8")
+	public @ResponseBody List<VisitorBook> lists() {
+		return visitorBookService.selectAll();
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)

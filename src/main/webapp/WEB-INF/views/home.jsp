@@ -2,18 +2,21 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html ng-app="VisitorBookApp">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NHN Entertainment TOAST ROOKIE Changwon Son's Visitor
-	Book</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>NHN Entertainment TOAST ROOKIE Changwon Son's Visitor Book</title>
 
-<link rel="stylesheet"href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="/resources/css/bootstrapValidator.min.css">
-<link rel="stylesheet" href="/resources/css/home.css">
+	<link rel="stylesheet"href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/resources/css/bootstrapValidator.min.css">
+	<link rel="stylesheet" href="/resources/css/home.css">
+	
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+	<script	src="/resources/js/home.js"></script>
+	
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-static-top " role="banner">
@@ -38,46 +41,21 @@
 		</div>
 	</div>
 
-	<div class="container">
-		<div id="notify" >
-			<c:if test="${nofity == 'success'}" >
-				<p class="bg-success" style="padding:15px;">정상적으로 입력되었습니다. </p>
-			</c:if>
-			<c:if test="${nofity == 'fail'}" >
-				<p class="bg-danger" style="padding:15px;"> 이메일형식이 잘못되어 입력이 실패되었습니다. </p>
-			</c:if>
-			${notify }
+	<div class="container" ng-controller="VisitorBookListController as visitorBook">
+		<div ng-repeat="visitorBook in visitorBooks">
+		  <div class="row">
+			  <div class="col-md-4">
+	        <h4>{{visitorBook.name}} / {{visitorBook.email}}</h4>
+	        <p>{{visitorBook.content}}</p>
+	        <p>{{visitorBook.created_at}}</p>
+	        <button ng-click="showModal(visitorBook.id)" 
+	        	class="btn btn-primary btn visitorbook-modify" 
+	        	data-toggle="modal" data-id="{{visitorBook.id}}">
+	          수정
+	        </button>
+	      </div>
+      </div>
 		</div>
-		
-		<c:set var="rowCount" value="${0}" />
-		
-		<c:if test="${not empty visitorBookList}" >
-			<c:forEach var="visitorBook" items="${visitorBookList}">
-				<c:set var="rowCount" value="${rowCount+1}" />
-				<c:if test="${rowCount == 1}" >
-					<div class="row">
-				</c:if>
-				
-				<div class="col-md-4">
-					<h4>${visitorBook.name} / ${visitorBook.email}</h4>
-					<p>${visitorBook.content}</p>
-					<p>${visitorBook.created_at}</p>
-					<button class="btn btn-primary btn visitorbook-modify" data-toggle="modal" data-id="${visitorBook.id}">
-  					수정
-					</button>
-				</div>
-					
-				<c:if test="${rowCount > 2}" >
-					<c:set var="rowCount" value="${0}" />
-					</div>
-				</c:if>
-			</c:forEach>
-		</c:if>
-		
-		<c:if test="${rowCount != 0}" >			
-			</div>
-		</c:if>
-		
 		<hr>
 
 		<footer>
@@ -190,7 +168,101 @@
 	<script	src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script	src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script	src="/resources/js/bootstrapValidator.min.js"></script>
-	<script	src="/resources/js/home.js"></script>
-	
+	<script>
+$(document).ready(function(){
+	$('#notify').delay(1000).fadeOut('slow');
+
+	$('#registerForm').bootstrapValidator({
+	    message : 'This value is not valid',
+	    feedbackIcons : {
+	        valid : 'glyphicon glyphicon-ok',
+	        invalid : 'glyphicon glyphicon-remove',
+	        validating : 'glyphicon glyphicon-refresh'
+	    },
+	    fields : {
+	        name : {
+	            validators : {
+	                notEmpty : {
+	                    message : '이름을 입력해주세요.'
+	                }
+	            }
+	        },
+	        email : {
+	            validators : {
+	                notEmpty : {
+	                    message : '이메일을 입력해주세요.'
+	                },
+	                emailAddress : {
+	                    message : '이메일 형식이 잘못되었습니다.'
+	                }
+	            }
+	        },
+	        password : {
+	            validators : {
+	                notEmpty : {
+	                    message : '비밀번호를 입력해주세요.'
+	                }
+	            }
+	        },
+	        content : {
+	            validators : {
+	                notEmpty : {
+	                    message : '내용을 입력해주세요.'
+	                }
+	            }
+	        }
+	    }
+	});
+
+	$("#confirmPasswordBtn").click(function(){
+	    $.ajax({
+	        type: "POST",
+	      url: "/check",
+	      data: { "id": $("#inputConfirmId").val(),
+	          "passwordConfirm": $("#inputPasswordConfirm").val()},
+	      dataType: 'json',
+	      success: function(resultData){
+	          if(resultData === true){
+	              $.setRegisterFormModal($("#inputConfirmId").val());
+	          } else{
+	              $("#passwordConfirmResult").text("비밀번호가 잘못됬습니다.");
+	              $('#passwordConfirmResult').delay(1000).fadeOut('slow');
+	          }
+	      },
+	      error: function(){
+	   console.log("something went wrong");
+	    }
+	    });
+	});
+	    
+	$('.modal').on('hidden.bs.modal', function(){
+	    $(this).find('form')[0].reset();
+	    $("#registerForm").attr("action","/add");
+	});
+	    
+	$.setRegisterFormModal = function(id){
+	    $('#passwordConfirmModal').modal('hide');
+	    $("#inputId").val(id);
+	    $("#registerForm").attr("action","/update");
+	    $("#visitorBookModal").modal("show");
+	    
+	    $.ajax({
+	      url: "/get/" + id,
+	      dataType: 'json',
+	      success: function(resultData){
+	          console.log(resultData);
+	          $("#inputName").val(resultData.name);
+	            $("#inputPassword").val(resultData.password);
+	            $("#inputContent").val(resultData.content);
+	            $("#inputEmail").val(resultData.email);
+	      },
+	      error: function(){
+	        console.log("something went wrong");
+	      }
+	    });
+	};
+});
+
+	</script>
 </body>
 </html>
