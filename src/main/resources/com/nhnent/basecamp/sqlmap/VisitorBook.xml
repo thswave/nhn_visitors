@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VisitorBook">
+
+  <resultMap id="VisitorBookResult" type="VisitorBook">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="password" column="password"/>
+    <result property="content" column="content"/>
+    <result property="created_at" column="created_at"/>
+    <result property="updated_at" column="updated_at"/>
+  </resultMap>
+ 
+  <select id="selectAllVisitorBook" resultMap="VisitorBookResult">
+    SELECT 
+    	id, name, email, content, password, created_at, updated_at 
+    FROM guest_book 
+    ORDER BY updated_at DESC
+  </select>
+  
+  <select id="selectVisitorBookById" parameterType="int" resultMap="VisitorBookResult">
+    SELECT 
+    	id, name, email, content, password, created_at, updated_at 
+    FROM guest_book 
+    WHERE id = #{id}
+  </select>
+ 
+   <insert id="insertVisitorBook" parameterType="VisitorBook">
+    insert into guest_book (
+    ORD_ID,
+    ITEM,
+    ITEM_COUNT,
+    ITEM_DESC,
+    ORD_DELETED
+    )
+    values (
+    #{id}, #{item}, #{amount}, #{description}, false
+    )
+  </insert>
+ 
+  <update id="updateVisitorBook" parameterType="VisitorBook">
+    update ORDERS set ORD_DELETED = true where ORD_ID = #{id}
+  </update>
+</mapper>
